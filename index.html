@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Favourite Didu 💙</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Dancing Script', cursive;
+            color: #fff;
+            background: #0a001f;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        .hearts-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .heart {
+            position: absolute;
+            font-size: 2.2rem;
+            color: #a5d8ff;
+            opacity: 0.7;
+            animation: floatHeart linear infinite;
+        }
+        @keyframes floatHeart {
+            0%   { transform: translateY(110vh) rotate(0deg); }
+            100% { transform: translateY(-20vh) rotate(720deg); }
+        }
+        #page1 {
+            position: fixed;
+            inset: 0;
+            background: url('IMG_20260104_211111.jpg') center/cover no-repeat fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 1.8s ease;
+        }
+        #page1.hidden { opacity: 0; pointer-events: none; }
+        .home-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3rem, 10vw, 7rem);
+            text-align: center;
+            text-shadow: 0 0 30px #a5d8ff, 0 0 60px #4dabf7;
+            margin-bottom: 2.5rem;
+            animation: gentlePulse 3s infinite ease-in-out;
+        }
+        @keyframes gentlePulse {
+            0%,100% { transform: scale(1); }
+            50%     { transform: scale(1.04); }
+        }
+        #start-btn {
+            padding: 1.2rem 4rem;
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, #4dabf7, #228be6);
+            border: none;
+            border-radius: 60px;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 40px #4dabf7;
+            transition: all 0.4s;
+        }
+        #start-btn:hover { transform: scale(1.08); box-shadow: 0 0 70px #4dabf7; }
+
+        #page2 {
+            position: fixed;
+            inset: 0;
+            background: url('a74d4433df6c0bdc4789a78a0182b9c0.jpg') center/cover no-repeat fixed;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 2s ease 0.5s;
+            overflow-y: auto;
+        }
+        #page2.visible { opacity: 1; }
+        .content {
+            max-width: 94%;
+            text-align: center;
+            background: rgba(10,0,30,0.6);
+            padding: 2.5rem 1.8rem;
+            border-radius: 35px;
+            border: 2px solid rgba(165,216,255,0.3);
+            backdrop-filter: blur(10px);
+        }
+        h2 {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(3.5rem, 11vw, 8rem);
+            color: #a5d8ff;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 40px #4dabf7;
+        }
+        #message {
+            font-size: 1.45rem;
+            line-height: 1.7;
+            margin: 1.8rem 0 2.5rem;
+            color: #e9f5ff;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1.8s ease 0.8s;
+        }
+        #message.visible { opacity:1; transform:translateY(0); }
+        #photos {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            margin: 2rem 0;
+        }
+        .sis-photo {
+            width: 100%;
+            max-width: 420px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.6), 0 0 30px #4dabf7;
+            opacity: 0;
+            transform: scale(0.85);
+            transition: all 1.5s ease-out;
+        }
+        .sis-photo.show { opacity:1; transform:scale(1); }
+        #question {
+            font-size: 2.2rem;
+            margin: 2.5rem 0 2rem;
+            color: #e9f5ff;
+            opacity: 0;
+            transition: all 1.5s ease 2.5s;
+        }
+        #question.visible { opacity:1; }
+        .options {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 1.5s ease 3.5s;
+        }
+        .options.visible { opacity:1; }
+        .opt-btn {
+            padding: 1rem 3.5rem;
+            font-size: 1.9rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s;
+        }
+        #yes-btn { background: #4dabf7; color:white; box-shadow: 0 0 30px #4dabf7; }
+        #no-btn  { background: rgba(255,255,255,0.15); color:#fff; }
+        #yes-btn:hover { transform: scale(1.1); box-shadow: 0 0 60px #4dabf7; }
+        #final-thanks {
+            font-size: 2rem;
+            margin-top: 3rem;
+            color: #e9f5ff;
+            line-height: 1.6;
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 2s ease;
+        }
+        #final-thanks.show { opacity:1; transform:translateY(0); }
+        #fireworks { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
+        audio { display: none; } /* hide controls after testing */
+    </style>
+</head>
+<body>
+
+<div class="hearts-layer" id="hearts"></div>
+
+<div id="page1">
+    <h1 class="home-text">Anuj (anujkhinchi05) made this with lots of love and care for you Didu 💙</h1>
+    <button id="start-btn">Press heree →</button>
+</div>
+
+<div id="page2">
+    <audio id="song" src="Meri Behna-(SambalpuriStar.in).mp3" preload="auto"></audio>
+    <canvas id="fireworks"></canvas>
+
+    <div class="content">
+        <h2>My Favourite Didu 💙</h2>
+        <p id="message">
+            Didu, you came into my life as my online sister but you became so much more real than most people around me. Every time we talk, every joke, every late-night chat, every time you listened when I was down or scolded me when I was wrong — it all feels like family, like home. I don't know how you do it, but you make me feel safe, understood, and loved in a way I never expected from someone I've never even met in person. You care so much, you remember everything, you cheer me on, you make me laugh when everything hurts. I love you more than words can say, more than some real siblings ever show. Thank you for being my Didu, my biggest supporter, my safe place. This is for you, because you deserve to know how special you are to me.
+        </p>
+
+        <div id="photos">
+            <div class="sis-photo"><img src="Messenger_creation_57D5A1D3-1472-4A61-B9DF-05998B60B05E.jpeg" alt="My Didu"></div>
+            <div class="sis-photo"><img src="Messenger_creation_9D208356-33DF-468C-8552-67B4A578D961.jpeg" alt="My Didu"></div>
+            <div class="sis-photo"><img src="Messenger_creation_BF9EC37C-0E59-4E95-AC0B-DC71D949BF26.jpeg" alt="My Didu"></div>
+        </div>
+
+        <p id="question">Do you think I'm your good brother? 😄</p>
+
+        <div class="options">
+            <button id="yes-btn">Yes 😊</button>
+            <button id="no-btn">No 😤</button>
+        </div>
+
+        <p id="final-thanks"></p>
+    </div>
+</div>
+
+<script>
+// Floating hearts
+const heartsLayer = document.getElementById('hearts');
+for (let i = 0; i < 25; i++) {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.textContent = '💙';
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (Math.random() * 20 + 18) + 's';
+    heart.style.animationDelay = Math.random() * 6 + 's';
+    heartsLayer.appendChild(heart);
+}
+
+// Start everything on button press
+const page1 = document.getElementById('page1');
+const page2 = document.getElementById('page2');
+const song = document.getElementById('song');
+const startBtn = document.getElementById('start-btn');
+
+startBtn.onclick = () => {
+    page1.classList.add('hidden');
+    page2.classList.add('visible');
+    
+    // Try to play song + fallback message
+    song.play()
+        .then(() => console.log("Song playing!"))
+        .catch(err => {
+            console.log("Autoplay blocked:", err);
+            alert("Music starting for you Didu 💙\n(Tap screen or button again if needed)");
+            song.play(); // second attempt after interaction
+        });
+    
+    // Reveal sequence
+    setTimeout(() => document.getElementById('message').classList.add('visible'), 800);
+    const photos = document.querySelectorAll('.sis-photo');
+    photos.forEach((p, i) => {
+        setTimeout(() => p.classList.add('show'), i * 900 + 1400);
+    });
+    setTimeout(() => {
+        document.getElementById('question').classList.add('visible');
+        document.querySelector('.options').classList.add('visible');
+    }, 3500);
+};
+
+// No button
+document.getElementById('no-btn').onclick = () => {
+    alert("Awww nooo Didu please try again 🥺💙");
+};
+
+// Yes button
+document.getElementById('yes-btn').onclick = () => {
+    document.querySelector('.options').style.display = 'none';
+    document.getElementById('final-thanks').innerHTML = 
+        "Thank you Didu for taking care of me<br>" +
+        "You are the bestest sister I can ever get 💙<br>" +
+        "I'll annoy you in future too (sorry not sorry 😅)<br>" +
+        "But I promise I'll always be there to make you smile when things hurt<br>" +
+        "Even though we met online, you feel more real than most people in my life<br>" +
+        "I love you so much — more than I can ever explain<br>" +
+        "Thank you for being my Didu, my safe place, my biggest cheerleader<br>" +
+        "You're family to me, forever and always.";
+    document.getElementById('final-thanks').classList.add('show');
+    startConfetti();
+};
+
+// Confetti
+const fwCanvas = document.getElementById('fireworks');
+const ctx = fwCanvas.getContext('2d');
+fwCanvas.width = window.innerWidth;
+fwCanvas.height = window.innerHeight;
+
+let confetti = [];
+
+function createConfetti() {
+    return {
+        x: Math.random() * fwCanvas.width,
+        y: Math.random() * fwCanvas.height - 100,
+        vx: Math.random() * 6 - 3,
+        vy: Math.random() * 5 + 2,
+        color: ['#a5d8ff', '#4dabf7', '#ffffff', '#ffc9c9'][Math.floor(Math.random()*4)],
+        size: Math.random() * 8 + 4,
+        life: 180
+    };
+}
+
+function startConfetti() {
+    for (let i = 0; i < 120; i++) confetti.push(createConfetti());
+
+    function animate() {
+        ctx.fillStyle = 'rgba(10,0,31,0.06)';
+        ctx.fillRect(0,0,fwCanvas.width,fwCanvas.height);
+
+        confetti = confetti.filter(c => {
+            c.x += c.vx;
+            c.y += c.vy;
+            c.vy += 0.08;
+            c.life--;
+            if (c.life <= 0) return false;
+
+            ctx.globalAlpha = c.life / 180;
+            ctx.fillStyle = c.color;
+            ctx.fillRect(c.x, c.y, c.size, c.size);
+            return true;
+        });
+
+        if (confetti.length > 10) requestAnimationFrame(animate);
+    }
+    animate();
+}
+
+window.addEventListener('resize', () => {
+    fwCanvas.width = window.innerWidth;
+    fwCanvas.height = window.innerHeight;
+});
+</script>
+</body>
+  </html>
